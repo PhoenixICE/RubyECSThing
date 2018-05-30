@@ -5,9 +5,12 @@ namespace GuessingGame.Component.Game
 {
     public class MapComponent : BaseSharperComponent
     {
-        public MapComponent(SharperEntity entity)
+        public MapComponent(SharperEntity entity, Location location)
         {
             Entity = entity;
+            Location = location;
         }
+
+        public Location Location { get; set; }
     }
 }

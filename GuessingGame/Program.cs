@@ -36,19 +36,22 @@ namespace GuessingGame
             foreach (var map in GameConfig.Locations)
             {
                 var mapEntity = await GameRunner.CreateEntityAsync();
+                //await Console.Out.WriteLineAsync($"Creating Map: {map.Value.Name}");
 
                 if (!setPlayerLocation)
                 {
-                    await Console.Out.WriteLineAsync(map.Value.Description);
+                    await Console.Out.WriteLineAsync(GameConfig.InitialGameMessage);
                     await playerLocationSystem.RegisterComponentAsync(mapEntity);
                     setPlayerLocation = true;
                 }
 
-                await mapSystem.RegisterComponentAsync(mapEntity);
+                await mapSystem.RegisterComponentAsync(mapEntity, map.Value);
 
-                foreach (var location in map.Value.ExplorableLocations)
+                foreach (var locationID in map.Value.ExplorableLocations)
                 {
-                    await explorableSystem.RegisterComponentAsync(mapEntity, GameConfig.Locations[location]);
+                    var location = GameConfig.Locations[locationID];
+                    await explorableSystem.RegisterComponentAsync(mapEntity, location);
+                    //await Console.Out.WriteLineAsync($"{map.Value.Name}: Added Explorable Location {location.Name}");
                 }
             }
         }
